@@ -10,7 +10,7 @@ import Util from './../util/util';
 
 
 
-let locale = constants.TAM
+let locale = 'tam'
 
 I18n.locale = locale;
 I18n.fallbacks = true;
@@ -19,6 +19,7 @@ I18n.translations = {
     tam
 };
 
+export const getCurrentLocale = () => I18n.locale
 export const string = (string, params = {}) => {
     return I18n.t(string, params);
 }

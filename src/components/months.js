@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import { View, StyleSheet, ToastAndroid, ScrollView } from 'react-native'
 import { List, Text, ListItem } from 'native-base'
 import Util from './../util/util';
+import Helper from './../util/helper';
 import { string } from './../i18n/i18n';
+import Data from './../data/repo';
 
 class MonthListScreen extends Component {
     static navigationOptions = ({ navigation }) => {
@@ -14,14 +16,15 @@ class MonthListScreen extends Component {
     render() {
         const { navigate } = this.props.navigation;
         const navProps = this.props.navigation.state.params;
-        const dataArray = navProps.monthList
-        console.log(dataArray);
+
+        const dataArray = Data.getMonthList(Util.currentYear());
+        console.log('data array ')
 
         const renderRow = (data) => {
             let onPress = () => {
                 navigate('Activity', {
-                    month: data.name,
-                    activities: data.monthActivities
+                    monthId: data.id,
+                    monthName: data.name,
                 })
             }
             return (

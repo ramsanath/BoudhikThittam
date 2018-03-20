@@ -1,33 +1,39 @@
 import Helper from './../util/helper';
 import Util from './../util/util';
 import constants from './../constants/constants';
-import { getEntireData } from './api';
-import { string } from './../i18n/i18n';
+import Api from './api';
+import { string, getCurrentLocale } from './../i18n/i18n';
 
 
-let data
-const year = Util.currentYear()
+
+
+const locale = getCurrentLocale()
 
 const saveLocally = (data) => {
     const serializedData = JSON.stringify(data);
-    Helper.storage.put(constants.ENTIRE_DATA, serializedData);
+    Helper.localStorage.put(constants.ENTIRE_DATA, serializedData);
 };
 
-export const getData = async () => {
-    let firstLaunch = await Helper.isFirstLaunch();
-    if (firstLaunch) {
-        data = await getEntireData();
-        saveLocally(data);
-    } else {
-        data = await Helper.storage.get(constants.ENTIRE_DATA);
-    }
+const getData = () => {
+    let jsonData = Helper.localStorage.get(constants.ENTIRE_DATA);
+    const data = JSON.parse(jsonData);
     return data;
+};
+
+export const loadDataAnd = async (callback) => {
+    let firstLaunch = await Helper.isFirstLaunch();
+    if (firstLaunch || !Util.isValidObject(getData())) {
+        let data = await Api.getEntireData();
+        saveLocally(data);
+        callback(data);
+    }
 };
 
 const Data = {
     getMonthList: (year) => {
+        let data = getData();
         let monthsList = [];
-        let months = data[year][constants.months];
+        let months = data[locale]['years'][year][constants.months];
         for (month in months) {
             let monthObj = {
                 id: month,
@@ -38,7 +44,9 @@ const Data = {
         }
         return monthsList;
     },
-    getActivityList: (activities) => {
+    getActivityList: (year, month) => {
+        let data = getData();
+        let activities = data[locale]['years'][year][constants.months][month];
         let activityList = [];
         for (activity in activities) {
             let actObj = {
@@ -50,8 +58,7 @@ const Data = {
         }
         return activityList;
     },
-    getActivitiesForMonth: (month) => data[year][month],
-};
+}
 
 
 export default Data;

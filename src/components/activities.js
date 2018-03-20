@@ -3,13 +3,14 @@ import { View, StyleSheet, ScrollView } from 'react-native';
 import { List, Text, ListItem } from 'native-base';
 import { string } from './../i18n/i18n';
 import Data from '../data/repo';
+import Util from '../util/util';
 
 const dataArray = []
 
 class ActivityListScreen extends Component {
     static navigationOptions = ({ navigation }) => {
         return {
-            title: `${string('month')}: ${navigation.state.params.month}`,
+            title: `${string('month')}: ${navigation.state.params.monthName}`,
         }
     };
 
@@ -17,7 +18,7 @@ class ActivityListScreen extends Component {
         const { navigate } = this.props.navigation;
         const navProps = this.props.navigation.state.params;
 
-        let activityList = Data.getActivityList(navProps.activities);
+        let activityList = Data.getActivityList(Util.currentYear(), navProps.monthId);
 
         const renderRow = (data) => {
             let onPress = () => {

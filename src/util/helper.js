@@ -9,7 +9,7 @@ import localStorage from 'react-native-sync-localstorage'
 
 
 export default Helper = {
-    storage: {
+    localStorage: {
         put: (key, val) => localStorage.setItem(key, val),
         get: (key, val) => localStorage.getItem(key)
     },

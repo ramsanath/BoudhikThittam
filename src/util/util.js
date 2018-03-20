@@ -5,6 +5,12 @@ const Util = {
             value != ''
         )
     },
+    isValidObject: (value) => {
+        return (
+            typeof value == 'object' &&
+            Object.keys(value).length != 0
+        )
+    },
     currentYear: () => (new Date()).getFullYear()
 }
 

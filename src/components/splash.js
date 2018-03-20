@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { string } from './../i18n/i18n';
 import { Spinner } from 'native-base';
+import { string } from './../i18n/i18n';
+import { NavigationActions } from 'react-navigation';
 
-import Data, { getData } from './../data/repo';
-import Util from '../util/util';
+import { loadDataAnd } from './../data/repo';
 
 
 
@@ -13,9 +13,8 @@ class SplashScreen extends Component {
 
     async componentDidMount() {
         const { navigate } = this.props.navigation;
-        let data = await getData();
-        const monthList = Data.getMonthList(Util.currentYear());
-        navigate('Month', { monthList: monthList })
+        const goToMonths = (data) => navigate('Month');
+        loadDataAnd(goToMonths);
     }
 
     static navigationOptions = {
