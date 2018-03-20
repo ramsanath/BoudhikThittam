@@ -16,8 +16,7 @@ const saveLocally = (data) => {
 
 const getData = () => {
     let jsonData = Helper.localStorage.get(constants.ENTIRE_DATA);
-    const data = JSON.parse(jsonData);
-    return data;
+    return (jsonData == undefined) ? undefined : JSON.parse(jsonData);
 };
 
 export const loadDataAnd = async (callback) => {
@@ -46,7 +45,7 @@ const Data = {
     },
     getActivityList: (year, month) => {
         let data = getData();
-        let activities = data[locale]['years'][year][constants.months][month];
+        let activities = data[locale]['years'][year][constants.months][month]['activities'];
         let activityList = [];
         for (activity in activities) {
             let actObj = {
