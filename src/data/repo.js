@@ -1,21 +1,19 @@
 import Helper from './../util/helper';
 import Util from './../util/util';
-import constants from './../constants/constants';
+import C, { paths } from './../util/constants';
 import Api from './api';
 import { string, getCurrentLocale } from './../i18n/i18n';
-
-
 
 
 const locale = getCurrentLocale()
 
 const saveLocally = (data) => {
     const serializedData = JSON.stringify(data);
-    Helper.localStorage.put(constants.ENTIRE_DATA, serializedData);
+    Helper.localStorage.put(C.ENTIRE_DATA, serializedData);
 };
 
 const getData = () => {
-    let jsonData = Helper.localStorage.get(constants.ENTIRE_DATA);
+    let jsonData = Helper.localStorage.get(C.ENTIRE_DATA);
     return (jsonData == undefined) ? undefined : JSON.parse(jsonData);
 };
 
@@ -32,7 +30,7 @@ const Data = {
     getMonthList: (year) => {
         let data = getData();
         let monthsList = [];
-        let months = data[locale]['years'][year][constants.months];
+        let months = data[locale]['years'][year][paths.months];
         for (month in months) {
             let monthObj = {
                 id: month,
@@ -45,7 +43,7 @@ const Data = {
     },
     getActivityList: (year, month) => {
         let data = getData();
-        let activities = data[locale]['years'][year][constants.months][month]['activities'];
+        let activities = data[locale][paths.years][year][paths.months][month][paths.activities];
         let activityList = [];
         for (activity in activities) {
             let actObj = {
