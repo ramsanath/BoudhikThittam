@@ -28,4 +28,5 @@ export default {
     },
     loading: 'லோடிங்',
     appName: 'பௌத்திக் திட்டம்',
+    back: 'பின்'
 };

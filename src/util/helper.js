@@ -1,32 +1,32 @@
-import { AsyncStorage } from 'react-native';
-import C from './../util/constants';
-import Util from './util';
-import localStorage from 'react-native-sync-localstorage'
+import React, { Component } from 'react';
+import localStorage from 'react-native-sync-localstorage';
 
 
-export default Helper = {
-    localStorage: {
-        put: (key, val) => localStorage.setItem(key, val),
-        get: (key, val) => localStorage.getItem(key)
-    },
-    setLaunchedFlag: () => {
-        AsyncStorage.setItem(C.HAS_LAUNCHED, 'true');
-    },
-    isFirstLaunch: async () => {
+export function mapNavParamsToProps(SomeComponent) {
+    return class extends Component {
+        static navigationOptions = SomeComponent.navigationOptions;
+        render() {
+            const params = this.props.navigation.state.params
+            return <SomeComponent {...this.props} {...params} />
+        }
+    }
+}
+
+export const storage = {
+    put: (key, val) => {
         try {
-            const hasLaunched = await AsyncStorage.getItem(C.HAS_LAUNCHED);
-            if (Util.isValidString(hasLaunched)) {
-                this.Helper.setLaunchedFlag();
-                return true;
-            }
-            return false;
+            return localStorage.setItem(key, val);
         } catch (error) {
-            return false;
+            console.error(error);
         }
     },
-    doOnFirstLaunch: (func) => {
-        if (this.isFirstLaunch()) {
-            func();
+    get: (key) => {
+        let val;
+        try {
+            val = localStorage.getItem(key);
+        } catch (error) {
+            console.error(error);
         }
+        return val;
     }
 };

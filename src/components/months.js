@@ -1,31 +1,31 @@
 import React, { Component } from 'react'
 import { View, StyleSheet, ToastAndroid, ScrollView } from 'react-native'
 import { List, Text, ListItem } from 'native-base'
-import Util from './../util/util';
-import Helper from './../util/helper';
-import { string } from './../i18n/i18n';
-import Data from './../data/repo';
+import { routes } from '../util/constants';
+import DataManager from '../data/data-manager';
 
 class MonthListScreen extends Component {
-    static navigationOptions = ({ navigation }) => {
-        return {
-            title: `${string('year')}: ${Util.currentYear()}`,
-        }
-    };
+
+    constructor(props) {
+        super(props);
+        const { setParams } = this.props.navigation;
+        setParams({ title: 'dadasd' })
+        this.dataArray = this.props.data.getMonthList(
+            this.props.appParams.locale,
+            this.props.appParams.year,
+        )
+    }
 
     render() {
         const { navigate } = this.props.navigation;
-        const navProps = this.props.navigation.state.params;
-
-        const dataArray = Data.getMonthList(Util.currentYear());
-        console.log('data array ')
-
         const renderRow = (data) => {
-            let onPress = () => {
-                navigate('Activity', {
-                    monthId: data.id,
-                    monthName: data.name,
-                })
+            const onPress = () => {
+                const params = {
+                    data: this.props.data,
+                    appParams: this.props.appParams,
+                    month: data.id
+                };
+                navigate(routes.activity, params)
             }
             return (
                 <ListItem
@@ -39,7 +39,7 @@ class MonthListScreen extends Component {
         return (
             <ScrollView>
                 <List
-                    dataArray={dataArray}
+                    dataArray={this.dataArray}
                     renderRow={renderRow}
                     containerStyle={{ marginBottom: 20 }} />
             </ScrollView>
@@ -57,4 +57,3 @@ const styles = StyleSheet.create({
 });
 
 export default MonthListScreen;
-

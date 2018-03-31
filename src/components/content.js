@@ -2,20 +2,22 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 
 
-
-
 class ActivityContent extends Component {
-    static navigationOptions = ({ navigation }) => {
-        return {
-            title: navigation.state.params.activity
-        }
-    };
+
+    constructor(props) {
+        super(props);
+        this.content = this.props.data.getContent(
+            this.props.appParams.locale,
+            this.props.appParams.year,
+            this.props.month,
+            this.props.activity,
+        )
+    }
 
     render() {
-        const navParams = this.props.navigation.state.params;
         return (
             <ScrollView>
-                <Text style={styles.content}>{navParams.content}</Text>
+                <Text style={styles.content}>{this.content}</Text>
             </ScrollView>
         );
     }

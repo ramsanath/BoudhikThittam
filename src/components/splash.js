@@ -2,24 +2,37 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Spinner } from 'native-base';
 import { string } from './../i18n/i18n';
-import { NavigationActions } from 'react-navigation';
-
+import { routes } from '../util/constants';
 import { loadDataAnd } from './../data/repo';
-
-
+import { currentYear } from '../util/util';
+import { getLocalePreference } from '../user-config';
+import DataManager from '../data/data-manager';
 
 
 class SplashScreen extends Component {
 
     async componentDidMount() {
         const { navigate } = this.props.navigation;
-        const goToMonths = (data) => navigate('Month');
-        loadDataAnd(goToMonths);
+
+        const appParams = {
+            // Default configuration params that is passes to all our screens (month, activity, content).
+            year: currentYear(),
+            locale: getLocalePreference()
+        };
+
+        const proceedToApp = (data) => {
+            // This function will be called after the data is fetched from the database or local storage.
+            const dataManager = new DataManager(data);
+            const params = {
+                // This is what is passes as the props to the navigating screen.
+                data: dataManager,
+                appParams
+            };
+            navigate(routes.month, params);
+        }
+        loadDataAnd(proceedToApp);
     }
 
-    static navigationOptions = {
-        title: string('appName'),
-    };
     render() {
         return (
             <View style={styles.container}>
@@ -30,7 +43,6 @@ class SplashScreen extends Component {
     }
 }
 
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -39,7 +51,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
 });
-
 
 
 export default SplashScreen;

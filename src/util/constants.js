@@ -1,9 +1,15 @@
-export default C = {
+export const constants = {
     APP_NAME: 'BoudhikThittam',
     USER_LOCALE: 'USER_LOCALE',
-    HAS_LAUNCHED: 'HAS_LAUNCHED',
     ENTIRE_DATA: 'ENTIRE_DATA'
 };
+
+export const routes = {
+    splash: 'Splash',
+    month: 'Month',
+    activity: 'Activity',
+    content: 'Content'
+}
 
 export const paths = {
     months: 'months',

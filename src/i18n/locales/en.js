@@ -28,4 +28,5 @@ export default {
     },
     loading: 'Loading',
     appName: 'Boudhik Thittam',
+    back: 'Back'
 };
