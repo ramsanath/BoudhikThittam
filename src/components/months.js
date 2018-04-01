@@ -1,15 +1,21 @@
 import React, { Component } from 'react'
 import { View, StyleSheet, ToastAndroid, ScrollView } from 'react-native'
-import { List, Text, ListItem } from 'native-base'
+import { ListView } from '@shoutem/ui';
 import { routes } from '../util/constants';
 import DataManager from '../data/data-manager';
+import Row from './row';
+import { string } from '../i18n/i18n';
+import { currentYear } from '../util/util';
 
 class MonthListScreen extends Component {
+    static navigationOptions = ({ navigation }) => {
+        return {
+            title: `${string('appName')} : ${currentYear()}`,
+        }
+    };
 
     constructor(props) {
         super(props);
-        const { setParams } = this.props.navigation;
-        setParams({ title: 'dadasd' })
         this.dataArray = this.props.data.getMonthList(
             this.props.appParams.locale,
             this.props.appParams.year,
@@ -17,7 +23,6 @@ class MonthListScreen extends Component {
     }
 
     render() {
-        const { navigate } = this.props.navigation;
         const renderRow = (data) => {
             const onPress = () => {
                 const params = {
@@ -25,23 +30,16 @@ class MonthListScreen extends Component {
                     appParams: this.props.appParams,
                     month: data.id
                 };
-                navigate(routes.activity, params)
+                this.props.navigation.navigate(routes.activity, params)
             }
-            return (
-                <ListItem
-                    key={data.id}
-                    onPress={onPress}>
-                    <Text>{data.name}</Text>
-                </ListItem>
-            )
+            return <Row icon={'events'} name={data.name} key={data.id} onPress={onPress} />
         }
 
         return (
             <ScrollView>
-                <List
-                    dataArray={this.dataArray}
-                    renderRow={renderRow}
-                    containerStyle={{ marginBottom: 20 }} />
+                <ListView
+                    data={this.dataArray}
+                    renderRow={renderRow} />
             </ScrollView>
         );
     }

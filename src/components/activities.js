@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { List, Text, ListItem } from 'native-base';
+import Row from './row';
 import { string } from './../i18n/i18n';
 import { routes } from '../util/constants';
 import DataManager from '../data/data-manager';
+import { ListView } from '@shoutem/ui';
 
 class ActivityListScreen extends Component {
+    static navigationOptions = ({ navigation }) => {
+        const monthName = string('months.' + navigation.state.params.month)
+        return {
+            title: `${monthName} ${string('month')}`
+        }
+    };
 
     constructor(props) {
         super(props);
@@ -20,7 +27,6 @@ class ActivityListScreen extends Component {
         const { navigate } = this.props.navigation;
 
         const renderRow = (data) => {
-
             const onPress = () => {
                 const params = {
                     data: this.props.data,
@@ -30,20 +36,13 @@ class ActivityListScreen extends Component {
                 };
                 navigate(routes.content, params);
             }
-            return (
-                <ListItem
-                    key={data.id}
-                    onPress={onPress}>
-                    <Text>{data.name}</Text>
-                </ListItem>
-            )
+            return <Row icon={'page'} name={data.name} key={data.id} onPress={onPress} />
         };
 
         return (
             <ScrollView>
-                <List
-                    containerStyle={{ marginBottom: 20 }}
-                    dataArray={this.dataArray}
+                <ListView
+                    data={this.dataArray}
                     renderRow={renderRow} />
             </ScrollView>
         );

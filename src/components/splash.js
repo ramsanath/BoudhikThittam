@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Spinner } from 'native-base';
+import { Spinner } from '@shoutem/ui';
 import { string } from './../i18n/i18n';
 import { routes } from '../util/constants';
 import { loadDataAnd } from './../data/repo';
@@ -37,20 +37,24 @@ class SplashScreen extends Component {
         return (
             <View style={styles.container}>
                 <Text>{string('loading')}</Text>
-                <Spinner />
+                <Spinner style={styles.spinner} />
             </View>
         );
     }
 }
 
-const styles = StyleSheet.create({
+const styles = {
     container: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#fff',
     },
-});
+    spinner: {
+        padding: 20,
+        size: 'large'
+    }
+};
 
 
 export default SplashScreen;
