@@ -2,11 +2,13 @@ import { firebaseConfig } from '../../app-config';
 import * as firebase from 'firebase';
 import { storage } from './../util/helper';
 import { constants, paths } from './../util/constants';
-import { isValidObject } from '../util/util';
+import { isValidObject, isValidString } from '../util/util';
 import { string, getCurrentLocale } from './../i18n/i18n';
+
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 const databaseRef = firebaseApp.database().ref();
+
 
 function getEntireDataAnd(callback) {
     databaseRef.once('value').then(callback);
@@ -25,13 +27,21 @@ function saveLocally(data) {
     storage.put(constants.ENTIRE_DATA, serializedData);
 }
 
-const getData = () => {
-    let jsonData = storage.get(constants.ENTIRE_DATA);
-    return (jsonData == undefined) ? undefined : JSON.parse(jsonData);
-};
+async function getLocalData(callback = () => undefined) {
+    const rawLocalData = await storage.get(constants.ENTIRE_DATA, callback);
+    if (isValidString(rawLocalData)) {
+        const localData = JSON.parse(rawLocalData);
+        return localData;
+    } else {
+        return undefined;
+    }
+}
 
-export const loadDataAnd = async (callback) => {
-    if (!isValidObject(getData())) {
+export async function loadDataAnd(callback) {
+    const localData = await getLocalData();
+    if (isValidObject(localData)) {
+        callback(localData);
+    } else {
         let data = await getEntireData();
         saveLocally(data);
         callback(data);

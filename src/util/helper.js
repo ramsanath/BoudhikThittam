@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import localStorage from 'react-native-sync-localstorage';
+import { AsyncStorage } from 'react-native';
 
 
 export function mapNavParamsToProps(SomeComponent) {
@@ -13,20 +13,12 @@ export function mapNavParamsToProps(SomeComponent) {
 }
 
 export const storage = {
-    put: (key, val) => {
-        try {
-            return localStorage.setItem(key, val);
-        } catch (error) {
-            console.error(error);
-        }
+    put: (key, value) => {
+        AsyncStorage.setItem(key, value)
+            .catch(error => console.error(error));
     },
-    get: (key) => {
-        let val;
-        try {
-            val = localStorage.getItem(key);
-        } catch (error) {
-            console.error(error);
-        }
-        return val;
+    get: async function (key, callback) {
+        const data = await AsyncStorage.getItem(key).then(callback);
+        return data;
     }
 };
