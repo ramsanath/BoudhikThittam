@@ -11,6 +11,8 @@ export function setLocalePreference(locale) {
 }
 
 export function getLocalePreference() {
-    const locale = storage.get(constants.USER_LOCALE);
-    return locale || defaultPreference.locale;
+    // TODO: use local storage somehow to get this data
+
+    // const locale = storage.get(constants.USER_LOCALE);
+    return defaultPreference.locale;
 }
