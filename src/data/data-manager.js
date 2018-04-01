@@ -1,11 +1,13 @@
 import { paths } from '../util/constants';
 import { string } from '../i18n/i18n';
+import { isValidString } from '../util/util';
 
 export default class DataManager {
 
     constructor(data, params) {
         this.data = data;
     }
+    
     getMonthList(locale, year) {
         let monthsList = [];
         let months = this.data[locale][paths.years][year][paths.months];
@@ -36,6 +38,9 @@ export default class DataManager {
 
     getContent(locale, year, month, activity) {
         const content = this.data[locale][paths.years][year][paths.months][month][paths.activities][activity];
+        if (!isValidString(content.title)) {
+            content.title = content.name
+        }
         return content;
     }
 

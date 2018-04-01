@@ -11,6 +11,7 @@ export default AppNavigator = StackNavigator({
     Splash: {
         screen: mapNavParamsToProps(SplashScreen),
         navigationOptions: {
+            header: null,
             title: string('appName'),
         }
     },
@@ -28,5 +29,7 @@ export default AppNavigator = StackNavigator({
             headerBackTitle: null
         }
     },
-    Content: { screen: mapNavParamsToProps(ActivityContent) }
+    Content: {
+        screen: mapNavParamsToProps(ActivityContent)
+    }
 });
