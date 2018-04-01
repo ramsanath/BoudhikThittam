@@ -7,7 +7,7 @@ export default class DataManager {
     constructor(data, params) {
         this.data = data;
     }
-    
+
     getMonthList(locale, year) {
         let monthsList = [];
         let months = this.data[locale][paths.years][year][paths.months];
